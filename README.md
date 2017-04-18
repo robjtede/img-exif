@@ -1,19 +1,35 @@
-# img-exif
+# &lt;img-exif&gt;
 
-This vanilla web component simply takes a `src` attribute like the standard `img` tag and renders it in it's correct orientation using any embedded EXIF data.
-
-Note: This component only works for **same-origin images** or **images with cross-origin headers**!
-
-img-exif has **no dependencies** (but may require a polyfill).
+> This vanilla web component simply takes a `src` attribute like the standard `img` element and renders it in it's correct orientation using any embedded EXIF data.
+>
+> Note: This component only works for **same-origin images** or **images with cross-origin headers**!
+>
+> `img-exif` has **no dependencies** (but may require a polyfill).
 
 
 <!-- ## Demo
 
 **[See demo page for examples](https://robjtede.uk/open-source/img-exif)** -->
 
+
+## Install
+
+Install `img-exif` with your preferred node package manager.
+
+```sh
+$ yarn add img-exif
+
+or
+
+$ npm install --save img-exif
+```
+
+You will need to include any polyfills for browsers that do not support the Web Components v1 spec. See [https://github.com/webcomponents/webcomponentsjs](https://github.com/webcomponents/webcomponentsjs).
+
+
 ## Usage
 
-Import the HTML file in the `<head>` after [installing](#Installation).
+Import the HTML file in the `<head>` after [installing](#install).
 ```html
 <link rel="import" href="./node_modules/img-exif/img-exif.html">
 ```
@@ -23,18 +39,21 @@ Use the tag on your page.
 <img-exif src="./your-image.jpg"></img-exif>
 ```
 
-## Installation
+<!--
+## Options
 
-Simply install with your preferred node package manager.
+| Attribute | Type                 | Default | Description                      |
+|:----------|:---------------------|:--------|:---------------------------------|
+| `src`     | *url*                |         | Same as `<img src="">`           |
+| `width`   | *string&#124;number* |         | Same as `<img width="">`         |
+| `height`  | *string&#124;number* |         | Same as `<img height="">`        |
+| `loading` | *boolean*            | true    | Show animated loading indicator? |
+ -->
 
-```bash
-yarn add img-exif
-```
+## History
 
-or
+For changelog, [see releases.](https://github.com/robjtede/img-exif/releases)
 
-```bash
-npm install --save img-exif
-```
+## License
 
-You will need to include any polyfills for browsers that do not support the Web Components v1 spec. See [https://github.com/webcomponents/webcomponentsjs](https://github.com/webcomponents/webcomponentsjs).
+[MIT License](https://github.com/robjtede/img-exif/blob/master/LICENSE.md)
