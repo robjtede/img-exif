@@ -1,9 +1,23 @@
 {
   "name": "img-exif",
   "version": "0.0.2",
-  "main": "index.html",
-  "repository": "git@github.com:robjtede/img-exif.git",
   "author": "Rob Ede <robjtede@icloud.com>",
+  "description": "A dependency-free vanilla web component that correctly orients images based on their EXIF data.",
+  "keywords": [
+    "web-component",
+    "web component",
+    "img",
+    "exif"
+  ],
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robjtede/img-exif"
+  },
+  "bugs": {
+    "url": "https://github.com/robjtede/img-exif/issues"
+  },
+  "homepage": "https://github.com/robjtede/img-exif",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^3.19.0",
