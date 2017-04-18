@@ -1,6 +1,6 @@
 {
   "name": "img-exif",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.html",
   "repository": "git@github.com:robjtede/img-exif.git",
   "author": "Rob Ede <robjtede@icloud.com>",
