@@ -1,6 +1,6 @@
 {
   "name": "img-exif",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Rob Ede <robjtede@icloud.com>",
   "description": "A dependency-free vanilla web component that correctly orients images based on their EXIF data.",
   "keywords": [
