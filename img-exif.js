@@ -8,7 +8,7 @@ class ImageExif extends HTMLElement {
   constructor () {
     super()
 
-    this.debug = false
+    this.debug = true
     if (this.debug) console.log('constructing')
 
     this.attachShadow({mode: 'open'})
@@ -34,7 +34,7 @@ class ImageExif extends HTMLElement {
 
     // parse image for orientation
     EXIF.getData({src: this.src}, function (imgBuffer) {
-      if (this.debug) console.log('got EXIF data', this.src, imgBuffer)
+      if ($this.debug) console.log('got EXIF data', this.src, imgBuffer)
 
       // get orientation
       const orientation = EXIF.getTag(this, 'Orientation')
@@ -98,6 +98,7 @@ class ImageExif extends HTMLElement {
           $img.src = blobUrl
           if ($this.width) $img.width = $this.width
           if ($this.height) $img.height = $this.height
+          if ($this.alt) $img.alt = $this.alt
           $this.root.appendChild($img)
         }, 'image/jpeg')
       }
@@ -128,6 +129,14 @@ class ImageExif extends HTMLElement {
     return this.setAttribute('height', val)
   }
 
+  get alt () {
+    return this.hasAttribute('alt') ? this.getAttribute('alt') : null
+  }
+
+  set alt (val) {
+    return this.setAttribute('alt', val)
+  }
+
   disconnectedCallback () {
     if (this.debug) console.log('disconnection img-exif')
   }
@@ -137,7 +146,7 @@ class ImageExif extends HTMLElement {
   }
 
   static get observedAttributes () {
-    return ['src', 'width', 'height']
+    return ['src', 'width', 'height', 'alt']
   }
 
   attributeChangedCallback (attrName, oldVal, newVal) {
@@ -146,7 +155,8 @@ class ImageExif extends HTMLElement {
     const changes = {
       src: () => { if (oldVal !== newVal) this.render() },
       width: () => { if (oldVal !== newVal) this.render() },
-      height: () => { if (oldVal !== newVal) this.render() }
+      height: () => { if (oldVal !== newVal) this.render() },
+      alt: () => { if (oldVal !== newVal) this.render() }
     }
 
     if (attrName in changes) changes[attrName]()
