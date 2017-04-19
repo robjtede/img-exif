@@ -16,12 +16,13 @@
       overflow: hidden;
     }
 
-    img {
-      display: inline-block;
+    figure.loading {
+      max-width: 1px;
+      max-height: 1px;
     }
 
-    img.loading {
-      display: block;
+    img {
+      display: inline-block;
     }
 
     img.o1 { transform: matrix(1, 0, 0, 1, 0, 0) }
@@ -34,8 +35,8 @@
     img.o8 { transform: matrix(0, -1, 1, 0, calc(-1 * var(--magic)), var(--magic)); }
   </style>
 
-  <figure>
-    <img class="loading">
+  <figure class="loading">
+    <img>
   </figure>
 </template>
 

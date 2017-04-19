@@ -8,7 +8,7 @@ class ImageExif extends HTMLElement {
   constructor () {
     super()
 
-    this.debug = false
+    this.debug = true
     if (this.debug) console.log('constructing')
 
     this.attachShadow({mode: 'open'})
@@ -57,9 +57,6 @@ class ImageExif extends HTMLElement {
           $figure.style.height = `${$img.height}px`
         }
 
-        $img.classList.remove('loading')
-        $img.classList.add(`o${orientation}`)
-
         if (orientation && orientation !== 1) {
         // if image dimensions have changed
           if ([5, 6, 7, 8].includes(orientation)) {
@@ -78,6 +75,9 @@ class ImageExif extends HTMLElement {
 
           const m = $img.width / 8
           $this.style.setProperty('--magic', m)
+
+          $figure.classList.remove('loading')
+          $img.classList.add(`o${orientation}`)
         }
       }
     })
@@ -142,3 +142,7 @@ class ImageExif extends HTMLElement {
 }
 
 window.customElements.define('img-exif', ImageExif)
+
+window.addEventListener('load', () => {
+  console.warn('YOUUUUUUUU')
+})
