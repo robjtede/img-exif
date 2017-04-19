@@ -24,6 +24,7 @@ class ImageExif extends HTMLElement {
   }
 
   render () {
+    if (!this.isConnected) return
     if (this.debug) console.log('rendering img-exif')
 
     // create canvas for image
