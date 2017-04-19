@@ -39,16 +39,18 @@ Use the tag on your page.
 <img-exif src="./your-image.jpg"></img-exif>
 ```
 
-<!--
+
 ## Options
 
-| Attribute | Type                 | Default | Description                      |
-|:----------|:---------------------|:--------|:---------------------------------|
-| `src`     | *url*                |         | Same as `<img src="">`           |
-| `width`   | *string&#124;number* |         | Same as `<img width="">`         |
-| `height`  | *string&#124;number* |         | Same as `<img height="">`        |
+| Attribute | Type  | Default | Description            |
+|:----------|:------|:--------|:-----------------------|
+| `src`     | *url* |         | Same as `<img src="">` |
+<!--
 | `loading` | *boolean*            | true    | Show animated loading indicator? |
  -->
+
+## Limitations
+- No option to use `height=` or `width=` attributes. Use CSS `width:` and `height:` properties instead.
 
 ## History
 

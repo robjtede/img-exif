@@ -2,42 +2,20 @@
   <style media="screen">
     :host {
       display: inline;
-      --magic: 12.5;
-    }
-
-    figure {
-      box-sizing: border-box;
-      /*border: 1px solid red;*/
-      background: grey;
-
-      display: inline-block;
+      font-size: 0;
       line-height: 0;
-      margin: 0;
-      overflow: hidden;
     }
 
-    figure.loading {
-      max-width: 1px;
-      max-height: 1px;
-    }
-
+    canvas,
     img {
-      display: inline-block;
+      height: inherit;
+      max-height: inherit;
+      max-width: inherit;
+      min-height: inherit;
+      min-width: inherit;
+      width: inherit;
     }
-
-    img.o1 { transform: matrix(1, 0, 0, 1, 0, 0) }
-    img.o2 { transform: matrix(-1, 0, 0, 1, 0, 0) }
-    img.o3 { transform: matrix(-1, 0, 0, -1, 0, 0) }
-    img.o4 { transform: matrix(1, 0, 0, -1, 0, 0); }
-    img.o5 { transform: matrix(0, 1, 1, 0, calc(-1 * var(--magic)), var(--magic)); }
-    img.o6 { transform: matrix(0, 1, -1, 0, calc(-1 * var(--magic)), var(--magic)); }
-    img.o7 { transform: matrix(0, -1, -1, 0, calc(-1 * var(--magic)), var(--magic)); }
-    img.o8 { transform: matrix(0, -1, 1, 0, calc(-1 * var(--magic)), var(--magic)); }
   </style>
-
-  <figure class="loading">
-    <img>
-  </figure>
 </template>
 
 <script src="./exif.js"></script>

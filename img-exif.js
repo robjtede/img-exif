@@ -8,10 +8,10 @@ class ImageExif extends HTMLElement {
   constructor () {
     super()
 
-    this.debug = true
+    this.debug = false
     if (this.debug) console.log('constructing')
 
-    this.attachShadow({mode: 'open'})
+    this.attachShadow({ mode: 'open' })
     this.root = this.shadowRoot
 
     this.root.appendChild(document.importNode(template.content, true))
@@ -20,9 +20,6 @@ class ImageExif extends HTMLElement {
   connectedCallback () {
     if (this.debug) console.log('connected img-exif')
 
-    this.$figure = this.root.querySelector('figure')
-    this.$img = this.root.querySelector('img')
-
     this.render()
   }
 
@@ -30,55 +27,67 @@ class ImageExif extends HTMLElement {
     if (this.src && !this.isConnected) return
     if (this.debug) console.log('rendering img-exif')
 
-    const $this = this
-    const $img = $this.$img
-    const $figure = $this.$figure
+    const $target = this.root.querySelector('canvas, img')
+    if ($target) this.root.removeChild($target)
+
+    this.$canvas = document.createElement('canvas')
+    this.$img = document.createElement('img')
+
+    const self = this
+    const $img = this.$img
+    const $canvas = this.$canvas
+
+    const ctx = $canvas.getContext('2d')
 
     // parse image for orientation
-    EXIF.getData({src: this.src}, function (buffer) {
-      if ($this.debug) console.log('got EXIF data', this.src)
+    EXIF.getData({ src: this.src }, function (buffer) {
+      if (self.debug) console.log('got EXIF data', self.src)
 
       // get orientation
       const orientation = EXIF.getTag(this, 'Orientation')
-      if ($this.debug) console.log(`orientation code: ${orientation}`)
+      if (self.debug) console.log(`orientation code: ${orientation}`)
 
-      // set image attributes
-      if ($this.alt) $img.alt = $this.alt
-
-      // use image data buffer as image src
+      // set image src to blob
       $img.src = URL.createObjectURL(new Blob([buffer]))
+
+      const transformRequired = orientation && orientation !== 1
+      const $target = transformRequired ? $canvas : $img
+
       $img.onload = () => {
-        if ($this.debug) console.log('image loaded')
+        if (self.debug) console.log('blob image loaded')
 
-        if (!orientation || orientation === 1) {
-          if ($this.width) $img.width = $this.width
-          if ($this.height) $img.height = $this.height
-          $figure.style.width = `${$img.width}px`
-          $figure.style.height = `${$img.height}px`
-        }
-
-        if (orientation && orientation !== 1) {
-        // if image dimensions have changed
+        // if orientation adjustment is needed
+        if (transformRequired) {
+          // if image dimensions have changed
           if ([5, 6, 7, 8].includes(orientation)) {
-            if ($this.width) $img.height = $this.width
-            if ($this.height) $img.width = $this.height
-
-            $figure.style.height = `${$img.width}px`
-            $figure.style.width = `${$img.height}px`
+            $canvas.width = $img.height
+            $canvas.height = $img.width
           } else {
-            if ($this.height) $img.height = $this.height
-            if ($this.width) $img.width = $this.height
-
-            $figure.style.width = `${$img.width}px`
-            $figure.style.height = `${$img.height}px`
+            $canvas.width = $img.width
+            $canvas.height = $img.height
           }
 
-          const m = $img.width / 8
-          $this.style.setProperty('--magic', m)
+          // possible orientation effects
+          const orientations = {
+            // 1: () => ctx.transform(1, 0, 0, 1, 0, 0),
+            2: () => ctx.transform(-1, 0, 0, 1, $img.width, 0),
+            3: () => ctx.transform(-1, 0, 0, -1, $img.width, $img.height),
+            4: () => ctx.transform(1, 0, 0, -1, 0, $img.height),
+            5: () => ctx.transform(0, 1, 1, 0, 0, 0),
+            6: () => ctx.transform(0, 1, -1, 0, $img.height, 0),
+            7: () => ctx.transform(0, -1, -1, 0, $img.height, $img.width),
+            8: () => ctx.transform(0, -1, 1, 0, 0, $img.width)
+          }
 
-          $figure.classList.remove('loading')
-          $img.classList.add(`o${orientation}`)
+          // apply orientation to canvas
+          orientations[orientation]()
+
+          // draw image to canvas
+          ctx.drawImage($img, 0, 0)
         }
+
+        // insert canvas or img
+        self.root.appendChild($target)
       }
     })
   }
@@ -89,22 +98,6 @@ class ImageExif extends HTMLElement {
 
   set src (val) {
     return this.setAttribute('src', val)
-  }
-
-  get width () {
-    return this.hasAttribute('width') ? this.getAttribute('width') : null
-  }
-
-  set width (val) {
-    return this.setAttribute('width', val)
-  }
-
-  get height () {
-    return this.hasAttribute('height') ? this.getAttribute('height') : null
-  }
-
-  set height (val) {
-    return this.setAttribute('height', val)
   }
 
   get alt () {
@@ -124,7 +117,7 @@ class ImageExif extends HTMLElement {
   }
 
   static get observedAttributes () {
-    return ['src', 'width', 'height', 'alt']
+    return ['src', 'alt']
   }
 
   attributeChangedCallback (attrName, oldVal, newVal) {
@@ -132,8 +125,6 @@ class ImageExif extends HTMLElement {
 
     const changes = {
       src: () => { if (oldVal !== newVal) this.render() },
-      width: () => { if (oldVal !== newVal) this.render() },
-      height: () => { if (oldVal !== newVal) this.render() },
       alt: () => { if (oldVal !== newVal) this.render() }
     }
 
@@ -142,7 +133,3 @@ class ImageExif extends HTMLElement {
 }
 
 window.customElements.define('img-exif', ImageExif)
-
-window.addEventListener('load', () => {
-  console.warn('YOUUUUUUUU')
-})
