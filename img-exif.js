@@ -86,12 +86,6 @@ class ImageExif extends HTMLElement {
         // create new image element to be inserted
         const $img = $this.root.querySelector('img')
 
-        if (canvas.height > canvas.width) {
-          $img.height = '350'
-        } else {
-          $img.width = '350'
-        }
-
         // get blob of canvas
         canvas.toBlob(blob => {
           if ($this.debug) console.log('canvas blobified')
@@ -102,6 +96,8 @@ class ImageExif extends HTMLElement {
 
           // output image
           $img.src = blobUrl
+          if ($this.width) $img.width = $this.width
+          if ($this.height) $img.height = $this.height
           $this.root.appendChild($img)
         }, 'image/jpeg')
       }
@@ -116,6 +112,22 @@ class ImageExif extends HTMLElement {
     return this.setAttribute('src', val)
   }
 
+  get width () {
+    return this.hasAttribute('width') ? this.getAttribute('width') : null
+  }
+
+  set width (val) {
+    return this.setAttribute('width', val)
+  }
+
+  get height () {
+    return this.hasAttribute('height') ? this.getAttribute('height') : null
+  }
+
+  set height (val) {
+    return this.setAttribute('height', val)
+  }
+
   disconnectedCallback () {
     if (this.debug) console.log('disconnection img-exif')
   }
@@ -125,14 +137,16 @@ class ImageExif extends HTMLElement {
   }
 
   static get observedAttributes () {
-    return ['src']
+    return ['src', 'width', 'height']
   }
 
   attributeChangedCallback (attrName, oldVal, newVal) {
     if (this.debug) console.log(`attribute changed on img-exif: ${attrName}, ${oldVal} => ${newVal}`)
 
     const changes = {
-      src: () => { if (oldVal !== newVal) this.render() }
+      src: () => { if (oldVal !== newVal) this.render() },
+      width: () => { if (oldVal !== newVal) this.render() },
+      height: () => { if (oldVal !== newVal) this.render() }
     }
 
     if (attrName in changes) changes[attrName]()
