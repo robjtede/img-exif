@@ -1,5 +1,42 @@
 <template>
-  <img>
+  <style media="screen">
+    :host {
+      display: inline;
+      --magic: 12.5;
+    }
+
+    figure {
+      box-sizing: border-box;
+      /*border: 1px solid red;*/
+      background: grey;
+
+      display: inline-block;
+      line-height: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    img {
+      display: inline-block;
+    }
+
+    img.loading {
+      display: block;
+    }
+
+    img.o1 { transform: matrix(1, 0, 0, 1, 0, 0) }
+    img.o2 { transform: matrix(-1, 0, 0, 1, 0, 0) }
+    img.o3 { transform: matrix(-1, 0, 0, -1, 0, 0) }
+    img.o4 { transform: matrix(1, 0, 0, -1, 0, 0); }
+    img.o5 { transform: matrix(0, 1, 1, 0, calc(-1 * var(--magic)), var(--magic)); }
+    img.o6 { transform: matrix(0, 1, -1, 0, calc(-1 * var(--magic)), var(--magic)); }
+    img.o7 { transform: matrix(0, -1, -1, 0, calc(-1 * var(--magic)), var(--magic)); }
+    img.o8 { transform: matrix(0, -1, 1, 0, calc(-1 * var(--magic)), var(--magic)); }
+  </style>
+
+  <figure>
+    <img class="loading">
+  </figure>
 </template>
 
 <script src="./exif.js"></script>
