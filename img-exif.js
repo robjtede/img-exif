@@ -91,6 +91,14 @@
       })
     }
 
+    get blobUrl () {
+      return new Promise((resolve, reject) => {
+        this.$canvas.toBlob(function (blob) {
+          resolve(URL.createObjectURL(blob))
+        })
+      })
+    }
+
     get src () {
       return this.getAttribute('src')
     }
