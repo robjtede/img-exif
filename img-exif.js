@@ -19,7 +19,7 @@
     connectedCallback () {
       this.debug('connected img-exif')
 
-    // this.render()
+      // this.render()
     }
 
     render () {
@@ -40,11 +40,11 @@
 
     // parse image for orientation
       EXIF.getData({ src: this.src }, function (buffer) {
-        if (self.debug) console.log('got EXIF data', self.src)
+        this.debug('got EXIF data', self.src)
 
       // get orientation
         const orientation = EXIF.getTag(this, 'Orientation')
-        if (self.debug) console.log(`orientation code: ${orientation}`)
+        this.debug(`orientation code: ${orientation}`)
 
       // set image src to blob
         $img.src = URL.createObjectURL(new Blob([buffer]))
@@ -53,7 +53,7 @@
         const $target = transformRequired ? $canvas : $img
 
         $img.onload = () => {
-          if (self.debug) console.log('blob image loaded')
+          this.debug('blob image loaded')
 
         // if orientation adjustment is needed
           if (transformRequired) {
@@ -133,7 +133,7 @@
     debug (msg) {
       if (this._debug) console.info(msg)
     }
-}
+  }
 
   window.customElements.define('img-exif', ImageExif)
 })(document.currentScript.ownerDocument)
