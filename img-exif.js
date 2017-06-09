@@ -38,26 +38,26 @@
 
       const ctx = $canvas.getContext('2d')
 
-    // parse image for orientation
+      // parse image for orientation
       EXIF.getData({ src: this.src }, function (buffer) {
-        this.debug('got EXIF data', self.src)
+        self.debug('got EXIF data', self.src)
 
-      // get orientation
+        // get orientation
         const orientation = EXIF.getTag(this, 'Orientation')
-        this.debug(`orientation code: ${orientation}`)
+        self.debug(`orientation code: ${orientation}`)
 
-      // set image src to blob
+        // set image src to blob
         $img.src = URL.createObjectURL(new Blob([buffer]))
 
         const transformRequired = orientation && orientation !== 1
         const $target = transformRequired ? $canvas : $img
 
         $img.onload = () => {
-          this.debug('blob image loaded')
+          self.debug('blob image loaded')
 
-        // if orientation adjustment is needed
+          // if orientation adjustment is needed
           if (transformRequired) {
-          // if image dimensions have changed
+            // if image dimensions have changed
             if ([5, 6, 7, 8].includes(orientation)) {
               $canvas.width = $img.height
               $canvas.height = $img.width
@@ -66,9 +66,9 @@
               $canvas.height = $img.height
             }
 
-          // possible orientation effects
+            // possible orientation effects
             const orientations = {
-            // 1: () => ctx.transform(1, 0, 0, 1, 0, 0),
+              // 1: () => ctx.transform(1, 0, 0, 1, 0, 0),
               2: () => ctx.transform(-1, 0, 0, 1, $img.width, 0),
               3: () => ctx.transform(-1, 0, 0, -1, $img.width, $img.height),
               4: () => ctx.transform(1, 0, 0, -1, 0, $img.height),
@@ -78,14 +78,14 @@
               8: () => ctx.transform(0, -1, 1, 0, 0, $img.width)
             }
 
-          // apply orientation to canvas
+            // apply orientation to canvas
             orientations[orientation]()
 
-          // draw image to canvas
+            // draw image to canvas
             ctx.drawImage($img, 0, 0)
           }
 
-        // insert canvas or img
+          // insert canvas or img
           self.root.appendChild($target)
         }
       })
