@@ -29,9 +29,16 @@ You will need to include any polyfills for browsers that do not support the Web 
 
 ## Usage
 
-Import the HTML file in the `<head>` after [installing](#install).
+Import the HTML file in the `<head>`.
+
+With Package Manager: please refer to [installing](#install)
 ```html
 <link rel="import" href="./node_modules/img-exif/img-exif.html">
+```
+
+Without npm for managing web component packages
+```html
+<link rel="import" href="https://unpkg.com/img-exif@latest/img-exif.html">
 ```
 
 Use the tag on your page.
